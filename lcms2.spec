@@ -1,6 +1,6 @@
 Name:           lcms2
 Version:        2.5
-Release:        2%{?dist}
+Release:        4%{?dist}
 Summary:        Color Management Engine
 License:        MIT
 URL:            http://www.littlecms.com/
@@ -82,6 +82,12 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_libdir}/pkgconfig/%{name}.pc
 
 %changelog
+* Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 2.5-4
+- Mass rebuild 2014-01-24
+
+* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 2.5-3
+- Mass rebuild 2013-12-27
+
 * Tue Oct  8 2013 Matthias Clasen <mclasen@redhat.com> 2.5-2
 - Disable strict aliasing (related: #884068)
 
