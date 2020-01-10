@@ -1,11 +1,12 @@
 Name:           lcms2
 Version:        2.6
-Release:        2%{?dist}
+Release:        3%{?dist}
 Summary:        Color Management Engine
 License:        MIT
 URL:            http://www.littlecms.com/
 Source0:        http://www.littlecms.com/lcms2-2.6.tar.gz
-Patch0:		define-ppc64le-endian.patch
+Patch0:		endianness.patch
+Patch1:         test_library_path.patch
 
 BuildRequires:  libjpeg-devel
 BuildRequires:  libtiff-devel
@@ -36,6 +37,7 @@ Development files for LittleCMS.
 %prep
 %setup -q -n lcms2-2.6
 %patch0 -p1
+%patch1
 %build
 export CFLAGS='-fno-strict-aliasing %optflags'
 %configure --disable-static --program-suffix=2
@@ -45,6 +47,9 @@ sed -i.rpath 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' li
 sed -i.rpath 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
 make %{?_smp_mflags}
+
+%check
+make check
 
 %install
 rm -rf ${RPM_BUILD_ROOT}
@@ -83,6 +88,11 @@ rm -rf ${RPM_BUILD_ROOT}
 %{_libdir}/pkgconfig/%{name}.pc
 
 %changelog
+* Fri Oct 16 2015 Andrew Hughes <gnu.andrew@redhat.com> - 2.6-3
+- Run tests as part of %%check, fixing Makefile to set LD_LIBRARY_PATH
+- Use upstream endianness fix to avoid ppc64le being built big-endian
+- Resolves: #1250914
+
 * Tue May 26 2015 Matthias Clasen <mclasen@redhat.com> 2.6-2
 - Build with -fno-strict-aliasing
 Related: #1174406
