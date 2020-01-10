@@ -1,0 +1,17 @@
+diff -up lcms2-2.6/include/lcms2.h.pccle lcms2-2.6/include/lcms2.h
+--- lcms2-2.6/include/lcms2.h.pccle	2015-05-08 14:47:23.180315646 -0400
++++ lcms2-2.6/include/lcms2.h	2015-05-08 14:48:27.071176735 -0400
+@@ -184,6 +184,13 @@ typedef int                  cmsBool;
+ #   define CMS_USE_BIG_ENDIAN   1
+ #endif
+ 
++#if defined (__GNUC__) && defined(__BYTE_ORDER__) && defined(__LITTLE_ENDIAN__)
++#   if __BYTE_ORDER__ == __ORDER_LITTLE_ENDIAN__
++// Don't use big endian for PowerPC little endian mode
++#     undef CMS_USE_BIG_ENDIAN
++#   endif
++#endif
++
+ #  ifdef TARGET_CPU_PPC
+ #    if TARGET_CPU_PPC
+ #      define CMS_USE_BIG_ENDIAN   1
